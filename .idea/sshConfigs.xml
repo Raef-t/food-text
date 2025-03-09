@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="sofara.app" id="9936c39e-6e41-4d70-878f-94652dadc0e2" port="22" customName="shela" nameFormat="CUSTOM" username="ftpyoyo@sofara.app" useOpenSSHConfig="true">
+        <option name="customName" value="shela" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
