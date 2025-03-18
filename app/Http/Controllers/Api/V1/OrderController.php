@@ -527,7 +527,9 @@ class OrderController extends Controller
         $order->extra_packaging_amount = (!empty($extra_packaging_data) && $request?->extra_packaging_amount > 0 && $store && ($extra_packaging_data[$store->module->module_type] == '1') && ($store?->storeConfig?->extra_packaging_status == '1')) ? $store?->storeConfig?->extra_packaging_amount : 0;
 
 
-        $carts = Cart::where('user_id', $order->user_id)->where('is_guest', $order->is_guest)->where('module_id', $request->header('moduleId'))
+        $carts = Cart::where('user_id', $order->user_id)
+        ->where('is_guest', $order->is_guest)
+        ->where('module_id', $request->header('moduleId'))
             ->when(isset($request->is_buy_now) && $request->is_buy_now == 1 && $request->cart_id, function ($query) use ($request) {
                 return $query->where('id', $request->cart_id);
             })
