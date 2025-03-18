@@ -398,6 +398,38 @@ class OrderController extends Controller
             $original_delivery_charge = (($request->distance * $per_km_shipping_charge) > $minimum_shipping_charge) ? ($request->distance * $per_km_shipping_charge) + $extra_charges : ($minimum_shipping_charge + $extra_charges);
         }
 
+        // Fetch all stores in the coverage area that have the product in stock
+        $stores = Store::where('zone_id', $zone_id)
+        ->where('status', 'open')
+        ->whereHas('products', function ($query) use ($product_id) {
+            $query->where('id', $product_id);
+        })
+        ->get();
+        dd($stores) 
+
+        // Compare Product Prices in all Stores
+        $selectedStore = null;
+        $lowestPrice = PHP_INT_MAX;
+
+        foreach ($stores as $store) {
+            $product = $store->products()->where('id', $product_id)->first();
+            if ($product && $product->price < $lowestPrice) {
+                $lowestPrice = $product->price;
+                $selectedStore = $store;
+            }
+        }
+        dd($selectedStore)
+
+        if (!$selectedStore) {
+            return response()->json([
+                'message' => 'Product not available in the coverage area.'
+            ], 404);
+        }
+
+    
+        $store = $selectedStore;
+
+
 
         if ($increased > 0) {
             if ($delivery_charge > 0) {
